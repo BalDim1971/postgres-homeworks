@@ -50,6 +50,7 @@ def main():
 		for i in range(3):
 			del_statement = f'DELETE FROM {NAME_TABLES[2-i]};'
 			cur.execute(del_statement)
+
 		for i in range(3):
 			if i == 0:
 				for employee in all_list[0]:
@@ -66,12 +67,12 @@ def main():
 					# "order_id","customer_id","employee_id","order_date","ship_city"
 					insert_statement = f'INSERT INTO {NAME_TABLES[i]} VALUES (%(order_id)s, %(customer_id)s, %(employee_id)s, %(order_date)s, %(ship_city)s)'
 					cur.execute(insert_statement, orders)
-	except (Exception, Error) as error:
-		print("Не смогли подключиться", error)
+		conn.commit()
+	except Exception as error:
+		conn.rollback()
+		print(f'Не смогли подключиться {error}')
 	finally:
 		if conn:
-			conn.commit()
-			cur.close()
 			conn.close()
 
 
