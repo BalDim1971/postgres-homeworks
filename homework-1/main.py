@@ -47,10 +47,10 @@ def main():
 	try:
 		conn = psycopg2.connect(host='localhost', database=NAME_BD, user='postgres')
 		cur = conn.cursor()
-		for i in range(3):
-			del_statement = f'DELETE FROM {NAME_TABLES[2-i]};'
+		for name_table in NAME_TABLES[::-1]:
+			del_statement = f'DELETE FROM {name_table};'
 			cur.execute(del_statement)
-
+		
 		for i in range(3):
 			if i == 0:
 				for employee in all_list[0]:
