@@ -16,3 +16,16 @@ WHERE EXISTS
 (SELECT * FROM products WHERE products.product_id = order_details.product_id AND discontinued = 1);
 
 DELETE FROM products WHERE discontinued = 1;
+
+-- Вариант 2, связи
+ALTER TABLE order_details
+DROP CONSTRAINT FK_order_details_products;
+
+-- Затем удаляем продукты:
+DELETE FROM products
+WHERE discontinued = 1;
+
+-- И, наконец, восстанавливаем связь:
+ALTER TABLE order_details
+ADD CONSTRAINT FK_order_details_products
+FOREIGN KEY (product_id) REFERENCES products (product_id);
